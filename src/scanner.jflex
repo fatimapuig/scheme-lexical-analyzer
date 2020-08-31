@@ -16,9 +16,9 @@ Reserved = "access" | "and" | "begin" | "bkpt" | "case" | "cond" | "cons-stream"
             | "let" | "let*" | "let-syntax" | "letrec" | "local-declare" | "macro" | "make-environment"
             | "named-lambda" | "or" | "quasiquote" | "quote" | "scode-quote" | "sequence" | "set!"
             | "the-environment" | "unassigned?" | "using-syntax"
-Identifier = {Initial}({Subsequent}*) | "+" | "-" | "..."
-Initial = {Letter} | "!" | "$" | "%" | "&" | "*" | "/" | ":" | "<" | "=" | ">" | "?" | "~" | "_" | "^"
-Subsequent = {Initial} | {Digit} | "." | "+" | "-"
+Identifier = {Initial}({Subsequent}*) | [\+\-] | "..."
+Initial = {Letter} | [!$%&*\/:<=>?~_\^]
+Subsequent = {Initial} | {Digit} | [\.+\-]
 Whitespace = [ \n\r\t]+
 Letter = [a-zA-Z]
 Digit = [0-9]
@@ -28,25 +28,25 @@ Boolean = "#"[TFtf]
 
 /* Numbers */
 Num = {Prefix}{Complex}
-Complex = {Real} | {Real}"@"{Real} | {Real} [+-] {Imag}
-                | "+"{Imag} | "-"{Imag}
-Imag = "i" | {UReal}"i"
+Complex = {Real} | {Real}[@]{Real} | {Real} [+-] {Imag} | [+-]{Imag}
+Imag = {UReal}?[i]
 Real = {Sign}{UReal}
-UReal = {UInteger} | {UInteger} "/" {UInteger} | {Decimal}
-UInteger = {Digit}+"#"*
+UReal = {UInteger} | {UInteger}[\/]{UInteger} | {Decimal}
+UInteger = {Digit}+[#]*
 Prefix = {Radix}{Exactness} | {Exactness}{Radix}
 Decimal = {UInteger}{Exponent} | "."{Digit}+"#"*{Suffix} | {Digit}+"."{Digit}*"#"*{Suffix}
             | {Digit}+"#"+".""#"*{Suffix}
+Radix = "" | "#d"
+
 Suffix =  "" | {Exponent}
 Exponent = {ExponentMarker}{Sign}{Digit}+
 ExponentMarker = [esfdl]
 Sign = "" | [+-]
 Exactness = "" | "#"[ie]
-Radix = "" | "#d"
 
 /* Miscellaneous */
 Dot = "."
-QuotationMarks = "'" | "`"
+QuotationMarks = ['`]
 UnquotationMarks = "," | ",@"
 
 /* Parentheses */
