@@ -1,0 +1,12 @@
+( define (sum h)
+	(cond
+		((<= h 0)
+			0
+		)
+		(else
+			(+ (sum(- h 1) ) 1)
+		)
+		
+	
+	)
+)
